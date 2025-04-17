@@ -126,7 +126,7 @@ class ColorPicker(QWidget):
         super().__init__()
         self.masterLayout = QVBoxLayout()
         self.setLayout(self.masterLayout)
-        self.colorPickerButton = QPushButton("Pick a Color")
+        self.colorPickerButton = QPushButton("Set Color")
         self.colorPickerButton.setStyleSheet(f"background-color:black;")
         self.masterLayout.addWidget(self.colorPickerButton)
         self.colorPickerButton.clicked.connect(self.ColorPickButtonClicked)
@@ -136,6 +136,27 @@ class ColorPicker(QWidget):
         self.color = QColorDialog.getColor()
         if self.color.isValid():
             self.colorPickerButton.setStyleSheet(f"background-color:{self.color};")
+
+class ControllerColor(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.masterLayout = QVBoxLayout()
+        self.setLayout(self.masterLayout)
+        self.controllerTipLabel = QLabel("Select the Controller you want to change the color of, then click the Set Color button to change it's color.")
+        self.masterLayout.addWidget(self.controllerTipLabel)
+        self.controllerColorButton = QPushButton("Change Color of Controller")
+        self.controllerColorButton.setStyleSheet(f"background-color:black;")
+        self.masterLayout.addWidget(self.controllerColorButton)
+        self.controllerColorButton.clicked.connect(self.ControllerColorButtonClicked)
+        self.color = QColor(0, 0, 0)
+
+    def ControllerColorButtonClicked(self):
+        self.color = QColorDialog.getColor()
+        self.controller = mc.ls(sl = True)[0]
+        mc.setAttr(f"{self.controller}.overrideEnabled", 1)
+        mc.setAttr(f"{self.controller}.overrideRGBColors", 1)
+        mc.setAttr(f"{self.controller}.overrideColorRGB", self.color.redF(), self.color.blueF(), self.color.greenF(), type = "double3")
+        
 
 class LimbRigToolWidget(QMayaWindow): # class for the window we create for the limb rigging
     def __init__(self):
@@ -171,6 +192,9 @@ class LimbRigToolWidget(QMayaWindow): # class for the window we create for the l
 
         self.colorPicker = ColorPicker()
         self.masterLayout.addWidget(self.colorPicker)
+
+        self.controllerColorChanger = ControllerColor()
+        self.masterLayout.addWidget(self.controllerColorChanger)
 
         self.rigLimbButton = QPushButton("Rig Limb") # adds a button labeled "Rig Limb"
         self.masterLayout.addWidget(self.rigLimbButton) # adds the button to the master layout
