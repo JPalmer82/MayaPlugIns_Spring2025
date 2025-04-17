@@ -12,3 +12,9 @@ Rigs any 3 joint limb.
 * Control the controller color
 * Modular approach
 * Set color of any selected controller
+
+## Maya To Unreal Engine
+
+<img src = "assets/MayaToUECapture.PNG">
+
+Creates a root joint if needed for exporting to Unreal Engine.
