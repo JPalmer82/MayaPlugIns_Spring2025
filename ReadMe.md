@@ -17,4 +17,4 @@ Rigs any 3 joint limb.
 
 <img src = "assets/MayaToUECapture.PNG">
 
-Creates a root joint if needed for exporting to Unreal Engine.
+* Creates a root joint if needed for exporting to Unreal Engine.
