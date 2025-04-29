@@ -4,7 +4,8 @@ from PySide2.QtCore import Signal
 from PySide2.QtGui import QIntValidator, QRegExpValidator
 from PySide2.QtWidgets import QCheckBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QVBoxLayout, QWidget
 import maya.cmds as mc
-import MayaPlugIns_Spring2025.src
+import MayaPlugIns_Spring2025
+import remote_execution
 
 def TryAction(action):
     def wrapper(*args, **kwargs):
@@ -78,20 +79,26 @@ class MayaToUE:
         self.SendToUnreal()
 
     def SendToUnreal(self):
-        ueUtilPath = os.path.join(MayaPlugIns_Spring2025.src, "UnrealUtilities.py")
+        ueUtilPath = os.path.join(MayaPlugIns_Spring2025.sourceDirectory, "UnrealUtilities.py")
         ueUtilPath = os.path.normpath(ueUtilPath)
 
         meshPath = self.GetSkeletalMeshSavePath().replace("\\", "/")
-        animDir = self.GetAnimDirPath().replace("\\", "/")
+        animDir = self.GetAnimationDirectoryPath().replace("\\", "/")
 
         commands = []
         with open(ueUtilPath, 'r') as ueUtilityFile:
-            commands = ueUtilityFile.readlines
+            commands = ueUtilityFile.readlines()
 
-        commands.append(f"\nImportMeshAndAnimation(\'{meshPath}\', '{animDir}\')")
+        commands.append(f"\nImportMeshAndAnimation(\'{meshPath}\', \'{animDir}\')")
 
         command = "".join(commands)
         print(command)
+
+        remoteExecute = remote_execution.RemoteExecution()
+        remoteExecute.start()
+        remoteExecute.open_command_connection(remoteExecute.remote_nodes)
+        remoteExecute.run_command(command)
+        remoteExecute.stop()
 
 
 
@@ -350,4 +357,5 @@ class MayaToUEWidget(QMayaWindow):
         self.mayaToUE.SetSelectionAsRootJoint()
         self.rootJointText.setText(self.mayaToUE.rootJoint)
 
-MayaToUEWidget().show()
+def Run():
+    MayaToUEWidget().show()

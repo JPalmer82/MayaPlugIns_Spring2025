@@ -216,5 +216,6 @@ class LimbRigToolWidget(QMayaWindow): # class for the window we create for the l
         except Exception as e: # if the button encounters an error, it will display an error message for the user
             QMessageBox.critical(self, "Error", "Wrong Selection, please select the first joint of a limb!")
 
-limbRigToolWidget = LimbRigToolWidget() # creates the Limb Rig Tool for the user in Maya
-limbRigToolWidget.show() # displays the Limb Rig Tool
+def Run():
+    limbRigToolWidget = LimbRigToolWidget() # creates the Limb Rig Tool for the user in Maya
+    limbRigToolWidget.show() # displays the Limb Rig Tool

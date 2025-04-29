@@ -1,6 +1,6 @@
 import sys
 sys.path.append("D:/profile redirect/jvpalmer/Documents/GitHubWorkspace/MayaPlugIns_Spring2025/src")
-sys.path.append("D:/dev/")
+sys.path.append("D:/profile redirect/jvpalmer/Documents/GitHubWorkspace/MayaPlugIns_Spring2025")
 print("added path")
 # the text inside is the file path to MayaTools/src just copy that and input it inside if different
 # copy and paste this into the maya Python Script Editor to allow access
